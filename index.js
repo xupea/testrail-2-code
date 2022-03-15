@@ -1,6 +1,6 @@
 "use strict";
 
-const lineStart = 108;
+const lineStart = 144;
 const lineHeight = 18;
 let currentLine = 1;
 
@@ -37,7 +37,11 @@ document.getElementById("copy-code").addEventListener("click", () => {
   text = text.replace(/\u00A0/g, " ");
   navigator.clipboard.writeText(text);
 
-  document.getElementById('copied').style.display = 'inline';
+  document.getElementById("copied").style.display = "inline";
+
+  setTimeout(() => {
+    document.getElementById("copied").style.display = "none";
+  }, 1000);
 });
 
 /**
@@ -125,12 +129,14 @@ function getDataFromURL() {
   const caseTitle = url.searchParams.get("caseTitle");
   const caseId = url.searchParams.get("caseId");
   const caseSection = url.searchParams.get("caseSection");
+  const caseLink = decodeURIComponent(url.searchParams.get("caseLink"));
 
   return {
     steps,
     caseId,
     caseTitle,
     caseSection,
+    caseLink,
   };
 }
 
@@ -187,8 +193,12 @@ function createDescribeClose() {
 }
 
 function fetchAllSteps() {
-  const { steps, caseId, caseTitle, caseSection } = getDataFromURL();
+  const { steps, caseId, caseTitle, caseSection, caseLink } = getDataFromURL();
   console.log(steps, caseId, caseTitle);
+
+  updateCaseNameInComment(caseTitle);
+
+  updateCaseLinkInComment(caseLink);
 
   updateDescribe(caseSection);
 

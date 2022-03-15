@@ -1,5 +1,5 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "jj_flash_note_action_create") {
+  if (request.action === "testrail_2_code_action_create") {
     createIframe(request.data);
   } else if (request.action === "close-iframe") {
     closeIframe();
@@ -12,6 +12,7 @@ function createIframe(data) {
   const dataEncode = encodeURIComponent(dataString);
   const caseTitle = encodeURIComponent(data["caseTitle"]);
   const caseSection = encodeURIComponent(data["caseSection"]);
+  const caseLink = encodeURIComponent(data["caseLink"]);
 
   const iframe = document.createElement("iframe");
   iframe.id = "iframe-in-root";
@@ -31,7 +32,7 @@ function createIframe(data) {
   `;
   iframe.src =
     chrome.runtime.getURL("main.html") +
-    `?steps=${dataEncode}&caseId=${data["caseId"]}&caseTitle=${caseTitle}&caseSection=${caseSection}`;
+    `?steps=${dataEncode}&caseId=${data["caseId"]}&caseTitle=${caseTitle}&caseSection=${caseSection}&caseLink=${caseLink}`;
 
   const container = document.createElement("div");
   const app = document.createElement("div");
